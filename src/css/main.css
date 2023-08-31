@@ -1,0 +1,378 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+
+
+/*В майбутньому планується розробка для мобільних пристроїв */
+@media only screen and (max-width: 500px){
+    /* Загальні стилі для всіх елементів */
+    body {
+        background-color: #f0f0f0;
+        color: #333;
+    }
+}
+
+
+@media screen and (max-width: 600px){
+    body{
+        font-size: 16px;
+    }
+}
+
+@media screen and (min-width: 601px){
+    body{
+        font-size: 12px;
+    }
+}
+
+
+/*generaly and navigation top part web-page */
+
+:root{
+    --primary: white;
+    --secondary: #2b3452;
+}
+
+body{
+    background-color: #BE3455;
+    color: white
+}
+
+header{
+    background-color: #9BB7D4;
+    border-bottom: solid #FF6F61;
+}
+
+header nav{
+    display: flex;
+    gap: 0.5em;
+    justify-content: end;
+    margin: 0 auto;
+    max-width: 100em;
+}
+
+header nav a{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    background-color: #B55A30;
+    border-radius: 4px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.375em;
+    padding: 1.25em;
+    margin: 0.5em;
+    text-align: center;
+    border: solid black 0.1em;
+}
+
+header nav a:hover{
+    opacity: 0.7;
+}
+
+header nav h1{
+    margin-right: auto;
+    border-bottom: 3px solid var(--primary);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 2em;
+}
+
+header nav a.active{
+    display:none;
+    background-color: #9BB7D4;
+}
+
+main{
+    max-width: auto;
+
+}
+
+/* Add sampling places*/
+.add_sampling_places{
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #88B04B;
+    border-radius: 20px;
+    width: 30em;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    margin-top: 1.5em;
+    border: solid black 0.14em;
+
+}
+
+.add_sampling_places h1{
+    margin-bottom: 2%;
+    margin-top: 1%;
+}
+
+.add_sampling_places select, .add_sampling_places input{
+    display:block;
+    border-radius: 20px;
+    border: solid black 0.5px;
+    text-align: center;
+    margin: 0 auto 3% auto;
+    font-size: 1.5em;
+}
+
+.add_sampling_places input:hover, .add_sampling_places select:hover{
+    background-color: #DFCFBE;
+    color:black;
+}
+
+.add_sampling_places input[type="submit"]{
+    font-size: 1.5em;
+    display: block;
+    padding: 1%;
+    border-radius: 5px;
+    border: outset black 0.2em;
+    background-color: #B55A30;
+    color:azure;
+    margin-right: 5%;
+}
+
+.add_sampling_places input[name="name_place"]{
+    width: 15em;
+}
+
+.add_sampling_places input[type="submit"]:active{
+    border-style: inset;
+}
+
+.add_sampling_places input[type="submit"]:hover{
+    color: black 0.5;
+}
+
+/* Add chemical index */
+
+
+.add_chemical_indexes{
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #88B04B;
+    border-radius: 20px;
+    width: 30em;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    margin-top: 1.5em;
+    border: solid black 0.14em;
+    padding: 1% 0 1% 0;
+}
+
+
+
+.add_chemical_indexes h1{
+    text-align: center;
+    padding: 1%
+}
+
+.add_chemical_indexes select, input{
+    display: block;
+    text-align: center;
+    font-size: 2em;
+    border-radius: 20px;
+}
+
+.add_chemical_indexes select {
+    display: block;
+    text-align: center;
+    font-size: 2em;
+    border-radius: 20px;
+    max-width: 80%;
+    margin: 0 auto; /* Додайте цей стиль для вирівнювання по центру */
+}
+
+.add_chemical_indexes h1, input, select{
+    margin: 1%
+}
+
+.add_chemical_indexes form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.add_chemical_indexes input[type="submit"] {
+    margin-left: 75%;
+    border-radius: 5px;
+    border: outset black 0.2em;
+    height: 1.7em;
+    background-color: #B55A30;
+    color:azure;
+    font-size: 2em;
+    width: 20%;
+}
+
+.add_chemical_indexes input[type="submit"]:active{
+    border-style: inset;
+}
+
+/*For search sampling places */
+
+.search_sampling_places {
+    font-size: 2em;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+.search_sampling_places .edit-link {
+    background-color: aliceblue;
+    color: #000000;
+    text-decoration: none;
+    padding: 5px 10px; /* Додайте відступи для зручності кліку */
+    border: 1px solid #000000; /* Замість border: outset 20px; */
+    border-radius: 5px; /* Збільшіть радіус закруглення */
+    display: inline-block; /* Поставте посилання в рядок */
+    margin-top: 5px; /* Додайте відступи вгору */
+}
+
+.search_sampling_places .edit-link:hover {
+    background-color: #f0f0f0; /* Змініть фон при наведенні */
+}
+
+.search_sampling_places .search-criterian-sp{
+    margin-top: 3%;
+    border-radius: 5px;
+    background-color: #88B04B;
+    border: 2px solid black;
+    padding: 0 1% 0.5% 1%;
+    text-align: center;
+}
+
+.search_sampling_places .search-criterian-sp select{
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    font-size: 1em;
+}
+
+
+.search_sampling_places .search-criterian-sp button{
+    font-size: 0.7em;
+    display: block;
+    padding: 1%;
+    border-radius: 5px;
+    border: outset black 0.2em;
+    background-color: #B55A30;
+    color:azure;
+    margin: 10% 0 0 75%;
+}
+
+.search_sampling_places .search-criterian-sp button:hover{
+    background-color: #884526;
+}
+
+.search_sampling_places .search-criterian-sp button:active{
+    border-style: inset;
+}
+
+
+.search_sampling_places div{
+    margin-top: 10px;
+}
+
+/*greed part search sp*/
+.result-search-sampling-place {
+    display: flex;
+    background-color: #92A8D1;
+    font-weight: bold;
+    gap: 10px;
+    border: 2px solid black;
+    justify-content: center;
+  }
+
+
+  .result-search-sampling-place .item1{
+    display: flex;
+    justify-content: center;
+  }
+
+  
+  .result-search-sampling-place .item1 > div {
+    display: inline-block;
+    background-color: #6b8ece;
+    color: white;
+  }
+
+  .result-search-sampling-place .item1 > button {
+     background-color: #B55A30;
+     color: white;
+     text-decoration: none;
+     border-radius: 5px;
+     padding: 5px 10px;
+     display: inline-block;
+     border: outset 2px black;
+  }
+  
+  
+  .result-search-sampling-place .item1 > button:hover {
+    background-color: #924b2a;
+  }
+
+  .result-search-sampling-place .item1 > button:active{
+    border: inset 2px black;
+  }
+
+  .result-search-sampling-place .item2 {
+    display: block;
+  }
+
+
+
+/* For errors */
+
+.errors_sp > input{
+    background-color: #cf4545;
+    font-size: 1.2rem;
+    text-align: center;
+    color: white;
+}
+
+.errors_sp > p{
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.errors{
+    padding-left: 50%;
+    padding-right: 50%;
+}
+
+
+.errors > input{
+    background-color: #ff3333;
+}
+
+.errors > input:focus{
+    background-color: #f0f0f0;
+}
+
+.errors > p{
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+
+
+
+/*For success */
+
+.success{
+    background-color: #00A170;
+    font-size: 2em;
+    max-width: 18em;
+    border-radius: 10px;
+}
+
+
+
