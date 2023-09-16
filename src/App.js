@@ -11,6 +11,7 @@ import AddSamplingPlaces from './pages/AddSamplingPlaces';
 import AddChemicalIndex from './pages/AddChemicalIndex';
 import SearchSamplingPlaces from './pages/SearchSamplingPlaces';
 import EditSamplingPlace from './pages/EditSamplingPlace';
+import SearchChemicalIndexes from './pages/SearchChemicalIndexes';
 
 
 const router = createBrowserRouter(
@@ -20,7 +21,8 @@ const router = createBrowserRouter(
         <Route path="addSamplingPlace" element={<AddSamplingPlaces />}/>
         <Route path="addChemicalIndex" element={<AddChemicalIndex/>} />
         <Route path="searchSamplingPlaces" element={<SearchSamplingPlaces/>} />
-        <Route path="editSamplingPlace/:id" element={<EditSamplingPlace/>} /> 
+        <Route path="searchChemicalIndexes" element={<SearchChemicalIndexes/>} />
+        <Route path="editSamplingPlace/:id" element={<EditSamplingPlace/>} />
         <Route path='about' element={<About />}/>
         <Route path='help' element={<HelpLayout />} >
           <Route path='faq'/>

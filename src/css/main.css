@@ -117,16 +117,15 @@ main{
     border: solid black 0.5px;
     text-align: center;
     margin: 0 auto 3% auto;
-    font-size: 1.5em;
+    font-size: 2em;
 }
 
 .add_sampling_places input:hover, .add_sampling_places select:hover{
-    background-color: #DFCFBE;
     color:black;
 }
 
 .add_sampling_places input[type="submit"]{
-    font-size: 1.5em;
+    font-size: 2em;
     display: block;
     padding: 1%;
     border-radius: 5px;
@@ -183,10 +182,10 @@ main{
 .add_chemical_indexes select {
     display: block;
     text-align: center;
-    font-size: 2em;
     border-radius: 20px;
     max-width: 80%;
     margin: 0 auto; /* Додайте цей стиль для вирівнювання по центру */
+    font-size: 2em;
 }
 
 .add_chemical_indexes h1, input, select{
@@ -282,57 +281,112 @@ main{
 }
 
 /*greed part search sp*/
-.result-search-sampling-place {
+
+.result-search-sampling-place{
+    max-width: 80%;
+}
+
+.result-search-sampling-place .header-result-sp {
     display: flex;
-    background-color: #92A8D1;
-    font-weight: bold;
-    gap: 10px;
-    border: 2px solid black;
-    justify-content: center;
-  }
+    align-items: center;
+    justify-content: space-between; /* Рівномірний розподіл між заголовком і кнопкою */
+    width: 100%; /* Розширюємо контейнер на всю ширину */
+    background-color: #00A170;
+}
+
+.result-search-sampling-place .header-result-sp p{
+    margin-left: auto;
+    margin-right: auto
+}
 
 
-  .result-search-sampling-place .item1{
-    display: flex;
-    justify-content: center;
-  }
-
-  
-  .result-search-sampling-place .item1 > div {
-    display: inline-block;
-    background-color: #6b8ece;
-    color: white;
-  }
-
-  .result-search-sampling-place .item1 > button {
+  .result-search-sampling-place button {
      background-color: #B55A30;
      color: white;
      text-decoration: none;
      border-radius: 5px;
      padding: 5px 10px;
-     display: inline-block;
      border: outset 2px black;
+     font-size: 20px;
+     
   }
   
-  
-  .result-search-sampling-place .item1 > button:hover {
+  .result-search-sampling-place button:hover {
     background-color: #924b2a;
   }
 
-  .result-search-sampling-place .item1 > button:active{
+  .result-search-sampling-place button:active{
     border: inset 2px black;
   }
 
-  .result-search-sampling-place .item2 {
-    display: block;
-  }
+
+  .result-search-sampling-place .th-result-sp{
+        display: grid;
+        background-color: #557699;
+        grid-template-columns: 2fr 1fr 2fr 2fr 2fr 1fr 1fr 1fr 0.5fr; /* 9 колонок рівної ширини */
+        gap: 20px; /* Відступи між елементами в сітці */
+        align-items: center; /* Вирівнювання вмісту по вертикалі по центру */
+        padding: 8px; /* Відступи всередині рядка */
+        font-size:0.8em;
+    }
+
+    .result-search-sampling-place .tr-result-sp {
+        display: grid;
+        background-color: #9BB7D4;
+        grid-template-columns: 2fr 1fr 2fr 2fr 2fr 1fr 1fr 1fr 0.5fr; /* 9 колонок рівної ширини */
+        gap: 20px; /* Відступи між елементами в сітці */
+        align-items: center; /* Вирівнювання вмісту по вертикалі по центру */
+        padding: 8px; /* Відступи всередині рядка */
+        font-size:0.8em;
+    }
+
+
+/*Edit sampling places*/
+
+.edit-sampling-place{
+    display: flex;
+    background-color: #88B04B;
+    justify-content: center;
+    width: 50%; /* Ширина контейнера */
+    margin: 5% auto; /* Вирівнювання по центру */
+    font-size: 16px;
+    border: solid 2px black;
+    border-radius: 10px;
+}
+
+.edit-sampling-place h2{
+    white-space: nowrap;
+    margin: 2% auto;
+}
+
+.edit-sampling-place select{
+    white-space: nowrap;
+    width: 50%;
+    margin: 2% auto;
+    font-size: 2em;
+}
+
+.edit-sampling-place input[type="submit"]{
+    margin: 3% 75%;
+    width: 30%;
+    background-color: #884526;
+    color: azure;
+    border: outset 2px black;
+}
+
+.edit-sampling-place input[type="submit"]:hover{
+    background-color: #6b371f;
+}
+
+.edit-sampling-place input[type="submit"]:active{
+    border-style: inset;
+}
 
 
 
 /* For errors */
 
 .errors_sp > input{
-    background-color: #cf4545;
     font-size: 1.2rem;
     text-align: center;
     color: white;
@@ -343,26 +397,25 @@ main{
     text-align: center;
 }
 
-.errors{
-    padding-left: 50%;
-    padding-right: 50%;
+.errors_edit_sp {
+    font-size: 1.2rem;
+    display: block;
+    color: #000000;
+    background-color: azure;
+    border-radius: 5px;
+    text-align: center;
+    max-width: 100%;
+    font-size: 1.2em;
+    margin-left: 0 auto;
 }
 
 
-.errors > input{
-    background-color: #ff3333;
-}
-
-.errors > input:focus{
-    background-color: #f0f0f0;
-}
 
 .errors > p{
+    display: block;
     font-size: 1.2rem;
     text-align: center;
 }
-
-
 
 
 /*For success */

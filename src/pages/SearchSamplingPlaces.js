@@ -61,19 +61,16 @@ class SearchSamplingPlaces extends React.Component{
               const filterRegionByRegion = sampling_places.filter(place => this.state.uniqRegionPlace.includes(place.region));
               const uniqRegionSampling = [...new Set(filterRegionByRegion.map(place=>place.region))].sort((a,b) => a.localeCompare(b));
 
-                console.log("uniqRegionSampling:", uniqRegionSampling)
               //Name water object
               const filterNWObyRegion = filterRegionByRegion.filter(place => place.region === uniqRegionSampling[0]);
 
               const uniqNWO = [...new Set(filterNWObyRegion.map(place => place.name_water_object))].sort((a, b) => a.localeCompare(b));
-              console.log('uniqNWO:', uniqNWO)
 
               const filterNWO = filterNWObyRegion.filter(place => uniqNWO[0].includes(place.name_water_object))
               this.setState({sampling_places, 
                 uniqRegionSampling: uniqRegionSampling, uniqNWO: uniqNWO,
                 filterRegionByRegion: filterRegionByRegion, filterNWO: filterNWO, filterNWObyRegion: filterNWObyRegion, 
               })
-              console.log("uniqRegionSampling f:", uniqRegionSampling)
             } catch (error) {
               console.error('Error fetching sampling places:', error);
             }
@@ -163,6 +160,7 @@ class SearchSamplingPlaces extends React.Component{
               return (
                   <div className="search_sampling_places">
                       <p>Search data sampling_places</p>
+                      {regime === false &&
                       <div class="search-criterian-sp">
                           <div >
                               Country
@@ -190,31 +188,33 @@ class SearchSamplingPlaces extends React.Component{
                           </div>
                           <button onClick={this.searchData}>Search</button>
                       </div>
-          
+                        }
                       {regime === true && (
                           <div className="result-search-sampling-place">
-                            <div className="item1">
-                              <div>Result search for country {selectedCountry}</div>
+                            <div className="header-result-sp">
+                              <p>Result search for country: {selectedCountry}</p>
                               <button onClick={this.backSearch}>Back</button>
                             </div>
-                            <div className="item2">
+                            <div className="th-result-sp">
                                 <div>Id</div>
                                 <div>Region</div>
                                 <div>Longitude</div>
                                 <div>Latitude</div>
                                 <div>Name place</div>
                                 <div>Name water object</div>
+                                <div>Type water object</div>
                                 <div>Comment</div>
                             </div>
                               {filterNWO.map((place, index) =>
-                                  <div key={place._id} className={`grid-item-${index}`}>
-                                      <div>Id: {place._id}</div>
-                                      <div>Region: {place.region}</div>
-                                      <div>Longitude: {place.longitude}</div>
-                                      <div>Latitude: {place.latitude}</div>
-                                      <div>Name place: {place.name_place}</div>
-                                      <div>Name water object: {place.name_water_object}</div>
-                                      <div>Comment: {place.comment}</div>
+                                  <div key={place._id} className="tr-result-sp">
+                                      <div>{place._id}</div>
+                                      <div>{place.region}</div>
+                                      <div>{place.longitude}</div>
+                                      <div>{place.latitude}</div>
+                                      <div>{place.name_place}</div>
+                                      <div>{place.name_water_object}</div>
+                                      <div>{place.type_water_object}</div>
+                                      <div>{place.comment}</div>
                                       <Link to={`/EditSamplingPlace/${place._id}`} className="edit-link">Edit</Link>
                                   </div>
                               )}

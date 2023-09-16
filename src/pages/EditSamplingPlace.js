@@ -1,10 +1,13 @@
 //Update
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate} from 'react-router-dom';
 
 
 function EditSamplingPlace(){
+    const navigate = useNavigate(); 
+
+
     const {id} = useParams();
     const [places, setPlaces] = useState([]);
     const [sampling_places, setSamplingPlaces] = useState([]);
@@ -23,7 +26,9 @@ function EditSamplingPlace(){
 
     const [selectRegion, setSelectRegion] = useState('');
     const [selectTypeWaterObject, setSelectTypeWaterObject] = useState('');
-    const [errorMessages, setErrorMessages] = useState([]);
+    const [errors, setErrorMessages] = useState([]);
+
+
     
 
     useEffect(() => {
@@ -76,10 +81,11 @@ function EditSamplingPlace(){
         setSelectTypeWaterObject(selectTypeWaterObject);
     }
 
+
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const { region, name_place, type_water_object, name_water_object, longitude, latitude, comment } = event.target;
-        const { sampling_places } = this.state;
         const errors = [];
 
         if (!region.value) {
@@ -107,26 +113,25 @@ function EditSamplingPlace(){
               errors.longitude = "fill coordinate x field";
             }
             else{
-              errors.longitude = "error format, need form -90 to 90, characters after dote 6";
+              errors.longitude = "error format, need form -90 to 90, characters after dote max 6";
             }
           }
     
-          if(!latitude.value|| !regexLatitude.test(latitude.value)){
+          if(!latitude.value || !regexLatitude.test(latitude.value)){
             if(!latitude.value){
               errors.latitude ="fill coordinate y field";
             }
             else{
-              errors.latitude ="error format, need form -180 to 180, characters after dote 6";
+              errors.latitude ="error format, need form -180 to 180, characters after dote max 6";
             }
           }
           
-
-          const existingPlaceWithName = excludeSamplingPlaces.find(place => place.name_place == name_place.value);  
+          const existingPlaceWithName = excludeSamplingPlaces.find(place => place.name_place === name_place.value);  
           if (existingPlaceWithName) {
             errors.place_match = "This name place is already taken"
           } 
     
-          const existingPlaceWithCoordinates = excludeSamplingPlaces.find(place => place.longitude == longitude.value && place.latitude == latitude.value);
+          const existingPlaceWithCoordinates = excludeSamplingPlaces.find(place => place.longitude === longitude.value && place.latitude === latitude.value);
           if (existingPlaceWithCoordinates) {
             errors.coordinates_match =  "These coordinates are already taken";
           }
@@ -136,23 +141,23 @@ function EditSamplingPlace(){
             setErrorMessages(errors);
             return;
           }
-          
-
         try {
             // Використовуйте тут ваш серверний URL для оновлення даних
             const response = await axios.put(`/api/edit-sampling-places/${id}/update`, sampling_place);
             const updatedPlace = response.data;
             console.log('Data updated:', updatedPlace);
+            this.props.history.push('/searchSamplingPlaces', { successMessage: 'Зміни успішно збережено' });
+            navigate('/searchSamplingPlaces');
         } catch (error) {
             console.error('Error updating data:', error);
            
         }
     };
 
-
     return(
-        <div class="edit-sampling-place">Change sampling place
-          {}
+        <div>
+          <h1>Change sampling place</h1>
+          <div className="edit-sampling-place">
             <form onSubmit={handleSubmit}>
                 <h2>Region</h2>
                 <select name="region" onChange={handleChangeRegion} value={selectRegion === '' ? sampling_place.region : selectRegion}>
@@ -161,7 +166,14 @@ function EditSamplingPlace(){
                     ))}
                 </select>
                 <h2>Name place</h2>
-                <input type="text" name="name_place" value={sampling_place.name_place}/>
+                <input type="text" name="name_place" value={sampling_place.name_place}
+                  onChange={(event) => {
+                    setSamplingPlace({
+                      ...sampling_place,
+                      name_place: event.target.value,
+                    });}} />
+                {errors.name_place && <p className='errors_edit_sp'>{errors.name_place}</p>}
+                {errors.place_match && <p className='errors_edit_sp'>{errors.place_match}</p>} 
                 <h2>Type water object</h2>
                 <select name="type_water_object" onChange={handleChangeTypeWaterObject} value={selectTypeWaterObject === "" ? sampling_place.type_water_object : selectTypeWaterObject}>
                     <option value="lake">lake</option>
@@ -171,14 +183,40 @@ function EditSamplingPlace(){
                     <option value="sea">sea</option>
                 </select>
                 <h2>Name water object</h2>
-                <input type="text" name="name_water_object" value={sampling_place.name_water_object}/>
+                <input type="text" name="name_water_object" value={sampling_place.name_water_object} onChange={(event) => {
+                    setSamplingPlace({
+                      ...sampling_place,
+                      name_water_object: event.target.value,
+                    });}}/>
+                  {errors.name_water_object && <p className='errors_edit_sp'>{errors.name_water_object}</p>}
                 <h2>Longitude</h2>
-                <input type="text" name="longitude" value={sampling_place.longitude}/>
+                <input type="text" name="longitude" value={sampling_place.longitude}  
+                onChange={(event) => {
+                    setSamplingPlace({
+                      ...sampling_place,
+                      longitude: event.target.value,
+                    });}} />
+                  {errors.coordinates_match && <p className='errors_edit_sp'>{errors.coordinates_match}</p>}
+                  {errors.longitude && <p className='errors_edit_sp'>{errors.longitude}</p>}
                 <h2>Latitude</h2>
-                <input type="text" name="latitude" value={sampling_place.latitude}/>
+                <input type="text" name="latitude" value={sampling_place.latitude} 
+                 onChange={(event) => {
+                    setSamplingPlace({
+                      ...sampling_place,
+                      latitude: event.target.value,
+                    });}}/>
+                    {errors.coordinates_match && <p className='errors_edit_sp'>{errors.coordinates_match}</p>}
+                    {errors.latitude && <p className='errors_edit_sp'>{errors.latitude}</p>}
                 <h2>Comment</h2>
-                <input type="text" name="comment" value={sampling_place.comment}/>
+                <input type="text" name="comment" value={sampling_place.comment} onChange={(event) => {
+                    setSamplingPlace({
+                      ...sampling_place,
+                      comment: event.target.value,
+                    });}}/>
+                  
+                <input type="submit" value="Edit"/>
             </form>
+            </div>
         </div>
     );
 }

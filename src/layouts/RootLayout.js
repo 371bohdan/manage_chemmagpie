@@ -12,6 +12,7 @@ const RootLayout = () => {
             <NavLink to='addSamplingPlace'>Add sampling place</NavLink>
             <NavLink to='addChemicalIndex'>Add chemical Index</NavLink>
             <NavLink to='searchSamplingPlaces'>Search sampling places</NavLink>
+            <NavLink to='searchChemicalIndexes'>Search chemical indexes</NavLink>
             </nav>
         </header>
         <main>

@@ -44,7 +44,6 @@ class AddChemicalIndex extends React.Component {
       const uniqCountry = [...new Set(places.map(place => place.country))].sort((a, b) => a.localeCompare(b));
       const filterRegionsByCountry = places.filter(place => this.state.selectedCountry === "" ? place.country === uniqCountry[0] : place.country === this.state.selectedCountry);
       const uniqRegionPlace = [...new Set(filterRegionsByCountry.map(place => place.region))].sort((a,b) => a.localeCompare(b));
-      console.log('filterRegions', filterRegionsByCountry)
       this.setState({ places: places, filterRegionsByCountry: filterRegionsByCountry, uniqCountry: uniqCountry, uniqRegionPlace: uniqRegionPlace});
     } catch (error) {
       console.error('Error fetching places:', error);
@@ -62,25 +61,20 @@ class AddChemicalIndex extends React.Component {
           
           //Type water object
           const filterTWOByRegion = filterRegionByRegion.filter(place => place.region === uniqRegionSampling[0]);
-
           const uniqTypeWaterObject = [...new Set(filterTWOByRegion.map(place => place.type_water_object))].sort((a,b) => a.localeCompare(b));
 
           //Name water object
           const filterNWOByTWO = filterTWOByRegion.filter(place => place.type_water_object === uniqTypeWaterObject[0]);
-
           const uniqNameWaterObject = [...new Set(filterNWOByTWO.map(place => place.name_water_object))].sort((a,b) => a.localeCompare(b));
 
           //Name place
           const filterNPByNWO = filterNWOByTWO.filter(place => place.name_water_object === uniqNameWaterObject[0]);
-          console.log('filterNPbyNWO:',filterNPByNWO)
 
           const uniqNamePlace = [...new Set(filterNPByNWO.map(place => place.name_place))].sort((a,b) => a.localeCompare(b));
-          console.log('uniqNamePlace:',uniqNamePlace)
           this.setState({sampling_places, uniqRegionSampling: uniqRegionSampling, uniqTypeWaterObject: uniqTypeWaterObject, 
             uniqNameWaterObject: uniqNameWaterObject, uniqNamePlace: uniqNamePlace,
             filterTWOByRegion: filterTWOByRegion, filterNWOByTWO: filterNWOByTWO, filterNPByNWO: filterNPByNWO
           })
-            
         } catch (error) {
           console.error('Error fetching sampling places:', error);
         }
@@ -104,7 +98,6 @@ class AddChemicalIndex extends React.Component {
         const sampling_places = this.state.sampling_places;
         const filterRegionByRegion = sampling_places.filter(place => uniqRegionPlace.includes(place.region));
         const uniqRegionSampling = [...new Set(filterRegionByRegion.map(place=>place.region))].sort((a,b) => a.localeCompare(b));
-        console.log("handleChangeCountry, uniqRegionSampling", uniqRegionSampling);
 
         const filterTWOByRegion = filterRegionByRegion.filter(place => place.region === uniqRegionSampling[0]);
         const uniqTypeWaterObject = [...new Set(filterTWOByRegion.map(place => place.type_water_object))].sort((a,b) => a.localeCompare(b));
@@ -195,34 +188,56 @@ class AddChemicalIndex extends React.Component {
 
         const { name_place, chemical_index, result_chemical_index, date_analysis, comment} = event.target;
         const errors = {};
-        const regexDateNalysis = /^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[0-2])\.(199[7-9]|20[01][0-9]|202[0-3])$/
-        const regexResultAnalysis = /\d\.\d{1,4}/
+        const regexResultAnalysis = /^(\d+(\.\d{1,4})?)?$/;
 
-        if(!name_place.value){
-          errors.name_place = 'Empty field "name place"'
-          console.log('Empty field "name place"');
-        }
-        if(!chemical_index.value){
-          errors.chemical_index = 'Empty field "chemical index"'
-          console.log('Empty field "chemical index"');
-        }
         if(!result_chemical_index.value || !regexResultAnalysis.test(result_chemical_index.value)){
           if(!result_chemical_index.value){
             errors.result_chemical_index = 'Empty filed "result chemical index"'
           }
           else{
-            errors.result_chemical_index = 'Is not correct result analysis, must be for example "30.1, 30.11, 30.123 or 30.2233 '
+            errors.result_chemical_index = 'Is not correct result analysis, must be for example 3, 30.1, 30.11, 30.123 or 30.2233 '
           }
         }
 
-        if(!date_analysis.value || !regexDateNalysis.test(date_analysis.value)){
-          if(!date_analysis.value){
-            errors.date_analysis = 'Empty field "date analysis"'
+        const dateRegex = /^(\d{2})\.(\d{2})\.(\d{4})$/;
+        const matches = date_analysis.value.match(dateRegex);
+
+        if (!date_analysis.value || (matches && matches.length === 4)) {
+          if (!date_analysis.value) {
+            errors.date_analysis = 'Empty field "date analysis"';
+          } else if(matches) {
+            const day = parseInt(matches[1], 10);
+            const month = parseInt(matches[2], 10);
+            const year = parseInt(matches[3], 10);
+            // Перевірка валідності дати
+            if (month >= 1 && month <= 12) {
+              const maxDaysInMonth = new Date(year, month, 0).getDate();
+              if (day >= 1 && day <= maxDaysInMonth) {
+                // Перевірка на високосний рік
+                const isLeapYear = (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+                if (month === 2 && day > 29 && !isLeapYear) {
+                  errors.date_analysis = 'Invalid date: February cannot have more than 29 days in a non-leap year.';
+                } else {
+                  // Перевірка на дату, яка не перевищує сьогоднішню дату
+                  const currentDate = new Date();
+                  currentDate.setHours(0, 0, 0, 0); // Встановити час на початок дня
+                  const enteredDate = new Date(year, month - 1, day); // month - 1, оскільки місяці в Date починаються з 0
+                  if (enteredDate > currentDate) {
+                    errors.date_analysis = 'Invalid date: The date cannot be in the future.';
+                  }
+                }
+              } else {
+                errors.date_analysis = 'Invalid date: The day exceeds the maximum number of days in the month.';
+              }
+            } else {
+              errors.date_analysis = 'Invalid date: The month must be in the range 1 to 12.';
+            }
           }
-          else{
-            errors.date_analysis = 'Is not correct date analysis must be "from 01.01.1997 to today"'
-          }
+        } else {
+          errors.date_analysis = 'Invalid format date';
         }
+
+
         if (Object.keys(errors).length > 0) {
           // Відобразити повідомлення про помилки
           this.setState({ successMessage: "", errorMessages: errors });
@@ -340,15 +355,13 @@ class AddChemicalIndex extends React.Component {
               </select>
 
               <h1>Result chemical index</h1>
-              {result_chemical_index ? 
-                (<div className='errors'><input  type='text' name='result_chemical_index'/><p>{result_chemical_index}</p></div>):
-                (<input type='text' name='result_chemical_index'/>)
-              }
+              <input type='text' name="result_chemical_index"/>
+              {result_chemical_index &&  <div className='errors'><p className='errors'>{result_chemical_index}</p></div>}
 
               <h1>Date analysis</h1>
-              {date_analysis ? (<div className='errors'><input type='text' name="date_analysis"/><p>{date_analysis}</p></div>):
-              (<input type="text" name="date_analysis" />)
-              }
+              <input type='text' name="date_analysis"/>
+              {date_analysis &&  <div className='errors'><p className='errors'>{date_analysis}</p></div>}
+              
               <h1>Comment</h1>
                 <input type="text" name="comment" />
               <input type="submit" value="Send" />

@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React from 'react'
 import axios from 'axios'
 
 class AddSamplingPlaces extends React.Component {
@@ -62,7 +62,13 @@ class AddSamplingPlaces extends React.Component {
 
       if(!name_place.value){
         errors.name_place = "fill in name place field";
+      } else if(name_place.value){
+        const existingPlaceWithName = sampling_places.find(place => place.name_place === name_place.value);     
+        if (existingPlaceWithName) {
+          errors.name_place = "This name place is already taken"
+        } 
       }
+
 
       if(!type_water_object.value){
         errors.type_water_object = "fill in type water object field";
@@ -71,37 +77,22 @@ class AddSamplingPlaces extends React.Component {
         errors.name_water_object = "fill in name water object field";
       }
 
-
       const regexLongitude = /^(-)?(([0-8]?[0-9])(\.\d{1,6})?)$|90$/
       const regexLatitude = /^(-)?((1?[0-7]?[0-9])(\.\d{1,6})?)$|180$/
   
-
-      if(!longitude.value|| !regexLongitude.test(longitude.value)){
-        if(!longitude.value){
-          errors.longitude = "fill coordinate x field";
-        }
-        else{
-          errors.longitude = "error format, need form -90 to 90, characters after dote 6";
-        }
+      if(!longitude.value){
+        errors.longitude = "fill coordinate x field";
+      }else if(!regexLongitude.test(longitude.value)){
+        errors.longitude = "error format, need form -90 to 90, characters after dote 6";
       }
-
-      if(!latitude.value|| !regexLatitude.test(latitude.value)){
-        if(!latitude.value){
-          errors.latitude ="fill coordinate y field";
-        }
-        else{
-          errors.latitude = "error format, need form -180 to 180, characters after dote 6";
-        }
-      }
-
-      const existingPlaceWithName = sampling_places.find(place => place.name_place == name_place.value);
-      console.log("existingPlaceWithName:",  existingPlaceWithName);
       
-      if (existingPlaceWithName) {
-        errors.place_match = "This name place is already taken"
-      } 
+      if(!latitude.value){
+        errors.latitude ="fill coordinate y field";
+      }else if(!regexLatitude.test(latitude.value)){
+        errors.latitude = "error format, need form -180 to 180, characters after dote 6";
+      }
 
-      const existingPlaceWithCoordinates = sampling_places.find(place => place.longitude == longitude.value && place.latitude == latitude.value);
+      const existingPlaceWithCoordinates = sampling_places.find(place => place.longitude === longitude.value && place.latitude === latitude.value);
       if (existingPlaceWithCoordinates) {
         errors.coordinates_match =  "These coordinates are already taken";
       }
@@ -137,7 +128,7 @@ class AddSamplingPlaces extends React.Component {
       const { places, selectedCountry, errorMessages } = this.state;
       const filteredPlaces = places.filter(place => place.country === selectedCountry);
       const uniqueCountries = [...new Set(places.map(place => place.country))];
-      const {region, name_place, type_water_object, name_water_object, longitude, latitude, place_match, coordinates_match} = errorMessages
+      const {region, name_place, name_water_object, longitude, latitude, coordinates_match} = errorMessages
 
       return (<div>
         <h1>Add sampling place</h1>
@@ -158,38 +149,27 @@ class AddSamplingPlaces extends React.Component {
                 </select>
                 {region && <div>{region}</div>}
                 <h1>Name place</h1>
-
-                {place_match ? 
-                (<div className='errors_sp'><input type="text" name="name_place"  /><p>{place_match}</p></div>) 
-                : name_water_object ? 
-                  (<div className='errors_sp'><input type="text" name="name_place"  /><p>{name_place}</p></div>) 
-                  : (<input type="text" name="name_place" />)
-                }
-
+                <input type="text" name="name_place" />
+                {name_place && <div className='errors_sp'><p>{name_place}</p></div>}
                 <h1>Type water object</h1>
-                {type_water_object ? 
-                (<div className="errors_sp"><input type="text" name="type_water_object" /><p>{type_water_object}</p></div>)
-                  : (<input type="text" name="type_water_object" />)
-                }
-                 
+                <select name="type_water_object">
+                    <option value="lake">lake</option>
+                    <option value="ocean">ocean</option>
+                    <option value="reservoir">reservoir</option>
+                    <option value="river">river</option>
+                    <option value="sea">sea</option>
+                </select>
                 <h1>Name water object</h1>
-                {name_water_object ? 
-                (<div className="errors_sp"><input type="text" name="name_water_object" /><p>{name_water_object}</p></div>)
-                  : (<input type="text" name="name_water_object" />)}
-
+                <input type="text" name="name_water_object" />
+                {name_water_object && <div className="errors_sp"><p>{name_water_object}</p></div>}
                 <h1>Longitude</h1>
-                {longitude ?
-                (<div className='errors_sp' ><input type="text" name="longitude" /><p>{longitude}</p></div>) 
-                : (coordinates_match ? (<div className='errors_sp'><input type="text" name="coordiante_x" /><p>{coordinates_match}</p></div>) :
-                (<input type="text" name="longitude" placeholder='how 33.00111' />))}
-
-                <h1>Longitude</h1>
-                {latitude ? 
-                (<div className='errors_sp' ><input type="text" name="latitude" /><p>{latitude}</p></div>) 
-                : (coordinates_match ? (<div className='errors_sp'><input type="text" name="coordiante_y" /><p>{coordinates_match}</p></div>) :
-                (<input type="text" name="latitude" placeholder='how 33.00111' />))
-                }
-
+                <input type="text" name="longitude" placeholder='example: 33.00111' />
+                {longitude && <div className='errors_sp'><p>{longitude}</p></div>}
+                {coordinates_match && <div className='errors_sp'><p>{coordinates_match}</p></div>}
+                <h1>Latitude</h1>
+                <input type="text" name="latitude" placeholder='example: 33.00111' />
+                {latitude && <div className='errors_sp' ><p>{latitude}</p></div>}
+                {coordinates_match && <div className='errors_sp' ><p>{latitude}</p></div>}
                 <h1>Comment</h1>
                 <input type="text" name="comment" />
                 <input type="submit" value="Send" />
