@@ -214,6 +214,136 @@ main{
     border-style: inset;
 }
 
+
+/*Search chemical index*/
+
+.searchChI {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #88B04B;
+    border-radius: 15px;
+    margin: 3% auto 0 auto;
+    width: 35em;
+    border: solid 2px black;
+}
+
+.searchChI p {
+    font-size: 1.5em;
+    margin-top: 1%;
+}
+
+.searchChI select {
+    font-size: 1.5em;
+}
+
+.searchChI input {
+    font-size: 1.5em;
+}
+
+.searchChI button {
+    font-size: 1.7em;
+    margin: 3% 0 3% 65%;
+    border: outset 2px black;
+    border-radius: 10px;
+    padding: 1%;
+    background-color: #B55A30;
+    color: azure;
+}
+
+.searchChI button:active {
+    border: inset 2px black;
+}
+
+.searchChI button:hover {
+    background-color: #a0512d;
+}
+
+
+/* part grid search chemical indexes */
+
+.result-search-chemical-indexes{
+    max-width: 80%;
+    display: block;
+    margin: 0 auto 0 auto;
+
+}
+.result-search-chemical-indexes .head-result-search-chemical-indexes{
+    margin: 3% auto 0 auto;
+    display: flex; /* Це важливо, щоб центрувати вміст горизонтально і вертикально */
+    justify-content: center; /* Це центрує вміст горизонтально */
+    align-items: center; /* Це центрує вміст вертикально */
+    font-size: 1.8em;
+    width: auto; /* Розширюємо контейнер на всю ширину */
+    background-color: #00A170;
+}
+
+.result-search-chemical-indexes .head-result-search-chemical-indexes p{
+    margin-right: 5%;
+}
+
+.result-search-chemical-indexes .head-result-search-chemical-indexes button{
+    font-size: 1em;
+    border: outset 2px black;
+    border-radius: 10px;
+    padding: 1%;
+    background-color: #B55A30;
+    color: azure;
+}
+
+.result-search-chemical-indexes .head-result-search-chemical-indexes button:hover{
+    background-color: #a0512d;
+}
+
+.result-search-chemical-indexes .head-result-search-chemical-indexes button:active{
+    border: inset 2px black;
+}
+
+.result-search-chemical-indexes .th-result-chi{
+    margin-top: 1%;
+    display: grid;
+    background-color: #557699;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr 1fr 1fr 0.5fr; /* 9 колонок рівної ширини */
+    gap: 10px; /* Відступи між елементами в сітці */
+    align-items: center; /* Вирівнювання вмісту по вертикалі по центру */
+    justify-content: center;
+    padding: 8px; /* Відступи всередині рядка */
+    font-size: 1.5em;
+}
+
+
+.result-search-chemical-indexes .tr-result-chi{
+    margin-top: 1%;
+    display: grid;
+    background-color: #9BB7D4;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr 1fr 1fr 0.5fr; /* 8 колонок рівної ширини */
+    gap: 10px; /* Відступи між елементами в сітці */
+    align-items: center; /* Вирівнювання вмісту по вертикалі по центру */
+    justify-content: center;
+    padding: 8px; /* Відступи всередині рядка */
+    font-size:1.5em;
+}
+
+.result-search-chemical-indexes  .edit-link{
+    background-color: aliceblue;
+    color: #000000;
+    text-decoration: none;
+    padding: 5px 10px; 
+    border: 1px solid #000000;
+    border-radius: 5px; 
+    display: inline-block; 
+    margin-top: 5px;
+    text-align: center;
+}
+
+
+.result-search-chemical-indexes .edit-link:hover{
+    background-color: #f0f0f0;
+}
+
+
+
+
 /*For search sampling places */
 
 .search_sampling_places {
@@ -228,11 +358,11 @@ main{
     background-color: aliceblue;
     color: #000000;
     text-decoration: none;
-    padding: 5px 10px; /* Додайте відступи для зручності кліку */
-    border: 1px solid #000000; /* Замість border: outset 20px; */
-    border-radius: 5px; /* Збільшіть радіус закруглення */
-    display: inline-block; /* Поставте посилання в рядок */
-    margin-top: 5px; /* Додайте відступи вгору */
+    padding: 5px 10px; 
+    border: 1px solid #000000;
+    border-radius: 5px; 
+    display: inline-block; 
+    margin-top: 5px; 
 }
 
 .search_sampling_places .edit-link:hover {
@@ -264,7 +394,7 @@ main{
     border: outset black 0.2em;
     background-color: #B55A30;
     color:azure;
-    margin: 10% 0 0 75%;
+    margin: 10% 0 0 70%;
 }
 
 .search_sampling_places .search-criterian-sp button:hover{
@@ -280,7 +410,7 @@ main{
     margin-top: 10px;
 }
 
-/*greed part search sp*/
+/*grid part search sp*/
 
 .result-search-sampling-place{
     max-width: 80%;
@@ -346,7 +476,9 @@ main{
 .edit-sampling-place{
     display: flex;
     background-color: #88B04B;
+    flex-direction: column;
     justify-content: center;
+    align-items: center; /* Вирівнюємо елементи по центру по вертикалі і горизонталі */
     width: 50%; /* Ширина контейнера */
     margin: 5% auto; /* Вирівнювання по центру */
     font-size: 16px;
@@ -354,17 +486,27 @@ main{
     border-radius: 10px;
 }
 
+.edit-sampling-place form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* Вирівнюємо елементи по центру по вертикалі і горизонталі */
+    width: 50%; /* Ширина контейнера */
+    font-size: 16px;
+    border-radius: 10px;
+}
+
+
 .edit-sampling-place h2{
     white-space: nowrap;
-    margin: 2% auto;
 }
 
 .edit-sampling-place select{
     white-space: nowrap;
-    width: 50%;
-    margin: 2% auto;
+    text-align: center;
     font-size: 2em;
-}
+} 
+
 
 .edit-sampling-place input[type="submit"]{
     margin: 3% 75%;
@@ -382,7 +524,57 @@ main{
     border-style: inset;
 }
 
+/* Edit chemical_index*/
 
+.edit-chemical-index{
+    display: flex;
+    background-color: #88B04B;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* Вирівнюємо елементи по центру по вертикалі і горизонталі */
+    width: 50%; /* Ширина контейнера */
+    margin: 5% auto; /* Вирівнювання по центру */
+    font-size: 16px;
+    border: solid 2px black;
+    border-radius: 10px;
+}
+
+.edit-chemical-index form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* Вирівнюємо елементи по центру по вертикалі і горизонталі */
+    width: 50%; /* Ширина контейнера */
+    font-size: 16px;
+    border-radius: 10px;
+}
+
+.edit-chemical-index input[type="submit"]{
+    margin: 3% 75%;
+    width: 30%;
+    background-color: #884526;
+    color: azure;
+    border: outset 2px black;
+}
+
+
+.edit-chemical-index h2{
+    white-space: nowrap;
+}
+
+.edit-chemical-index select{
+    white-space: nowrap;
+    text-align: center;
+    font-size: 2em;
+} 
+
+.edit-chemical-index input[type="submit"]:hover{
+    background-color: #6b371f;
+}
+
+.edit-chemical-index input[type="submit"]:active{
+    border-style: inset;
+}
 
 /* For errors */
 
@@ -409,7 +601,17 @@ main{
     margin-left: 0 auto;
 }
 
-
+.error-edit-ci{
+    font-size: 1.2rem;
+    display: block;
+    color: #000000;
+    background-color: azure;
+    border-radius: 5px;
+    text-align: center;
+    max-width: 100%;
+    font-size: 1.2em;
+    margin-left: 0 auto;
+}
 
 .errors > p{
     display: block;

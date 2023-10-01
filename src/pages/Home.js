@@ -1,6 +1,6 @@
 const Home = () => {
     return(
-    <h1>I was born in Urkaine</h1>
+    <h1>Welcome to chemamgpie editor</h1>
     )
 }
 

@@ -293,6 +293,10 @@ class AddChemicalIndex extends React.Component {
       abbr:'PO43-'
     },
     {
+      name: 'sulphates',
+      abbr:'SO42-'
+    },
+    {
       name: 'total hardness',
       abbr:'TH'
     },

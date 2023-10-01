@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useParams, useNavigate} from 'react-router-dom';
 
 
+
 function EditSamplingPlace(){
     const navigate = useNavigate(); 
 
@@ -24,56 +25,104 @@ function EditSamplingPlace(){
         comment: '',
     });
 
+    const [selectCountry, setSelectCountry] = useState('');
     const [selectRegion, setSelectRegion] = useState('');
     const [selectTypeWaterObject, setSelectTypeWaterObject] = useState('');
+
     const [errors, setErrorMessages] = useState([]);
 
 
-    
+    //Робимо фільтри та уніки для таких властивостей як region і country за зворотньою сумісністю по зовнішніх ключах
 
+    const [uniqCountry, setUniqCountry] = useState([]);
+    const [uniqRegion, setUniqRegion] = useState([]);
+    
     useEffect(() => {
-        fetchPlaces();
-        fetchSamplingPlaceEdit();
-        fetchSamplingPlaces();
+        fetchDownloadElements();
     }, []);
 
-    const fetchPlaces = async () => {
-        try {
-            const response = await axios.get('/api/places');
-            const placesData = response.data;
-            setPlaces(placesData);
-            console.log(placesData)
-        } catch (err) {
-            console.log('Error fetching places data', err);
-        }
-    };
 
-    
-    const fetchSamplingPlaceEdit = async () => {
-        try {
-            const response = await axios.get(`/api/edit-sampling-places/${id}`);
-            const samplingPlaceData = response.data;
-            setSamplingPlace(samplingPlaceData);
-        } catch (err) {
-            console.log('Error fetching data for editing:', err);
-        }
+    const fetchDownloadElements = async () => {
+      try {
+        //places aprt
+          const responsePlaces = await axios.get('/api/places');
+          const placesData = responsePlaces.data;
+          setPlaces(placesData);
+
+
+        //sampling_places part
+          const responseSamplingPlaces = await axios.get('/api/sampling_places');
+          const samplingPlacesData = responseSamplingPlaces.data;
+          const excludeSamplingPlaces = samplingPlacesData.filter(place => place._id !== id)
+          setExcludeSamplingPlaces(excludeSamplingPlaces);
+          setSamplingPlaces(samplingPlacesData);
+
+        //sampling_place part
+          const responseSamplingPlace = await axios.get(`/api/edit-sampling-places/${id}`);
+          const samplingPlaceData = responseSamplingPlace.data;
+          setSamplingPlace(samplingPlaceData);
+
+        //activation this is all in state across method
+        fetchPlacesbySamplingPlaces(placesData, samplingPlacesData, samplingPlaceData, excludeSamplingPlaces);
+      } catch (err) {
+          console.log('Error fetching data', err);
+      }
+  };
+
+
+
+    const fetchPlacesbySamplingPlaces = async (places, sampling_places, sampling_place, exclude_sampling_places) => {
+      try{
+        //зворотна сумісність
+        const filterRegionByRegionFirst = places.filter(place => sampling_place.region.includes(place.region))
+
+        console.log('filterRegionByRegionFirst:', filterRegionByRegionFirst)
+        const uniqCountryInv = [...new Set(filterRegionByRegionFirst.map(place => place.country))].sort((a, b) => a.localeCompare(b));
+        const selectCountry = uniqCountryInv[0]; // саме це значення ми використаємо для відображення при завантажені сторінки із початковими даними
+        setSelectCountry(selectCountry);
+
+        //Old School
+        const uniqCountryList = [...new Set(places.map(place => place.country))].sort((a, b) => a.localeCompare(b));
+        setUniqCountry(uniqCountryList);
+
+        const fitlerRegionsByCountry = places.filter(place => selectCountry === place.country);
+        const uniqPlacesRegionList = [...new Set(fitlerRegionsByCountry.map(place => place.region))].sort((a, b) => a.localeCompare(b));
+
+        const filterRegionByRegionSecond = sampling_places.filter(place => uniqPlacesRegionList.includes(place.region));
+        const uniqSPRegionList = [...new Set(filterRegionByRegionSecond.map(place => place.region))].sort((a, b) => a.localeCompare(b));
+
+        setSelectRegion(sampling_place.region);
+        setUniqRegion(uniqSPRegionList);
+
+      }catch(err){
+        console.log('Not completed connect database Places with sampling_places', err);
+      }
     }
 
-    const fetchSamplingPlaces = async () => {
-        try{
-            const response = await axios.get('/api/sampling_places');
-            const samplingPlacesData = response.data;
-            const excludeSamplingPlaces = samplingPlacesData.filter(place => place._id !== id)
-            setExcludeSamplingPlaces(excludeSamplingPlaces);
-            setSamplingPlaces(samplingPlacesData);
-        }catch(err){
-            console.log('Error data from sampling_places:', err);
-        }
+
+    const handleChangeCountry = (event) => {
+      const selectCountry = event.target.value;
+      setSelectCountry(selectCountry)
+      setSelectRegion('')
+
+      const fitlerRegionsByCountry = places.filter(place => selectCountry === place.country);
+      const uniqPlacesRegionList = [...new Set(fitlerRegionsByCountry.map(place => place.region))].sort((a, b) => a.localeCompare(b));
+
+      const filterRegionByRegionSecond = sampling_places.filter(place => uniqPlacesRegionList.includes(place.region));
+      const uniqSPRegionList = [...new Set(filterRegionByRegionSecond.map(place => place.region))].sort((a, b) => a.localeCompare(b));
+      setUniqRegion(uniqSPRegionList);
     }
+
+
 
     const handleChangeRegion = (event) => {
         const selectRegion = event.target.value;
         setSelectRegion(selectRegion);
+
+        // const filterRegionByRegionSecond = sampling_places.filter(place => place.region === selectRegion);
+        // const uniqSPRegionList = [... new Set(filterRegionByRegionSecond.map(place => place.region))].sort((a, b) => a.localeCompare(b));
+        // setUniqRegion(uniqSPRegionList);
+
     }
 
     const handleChangeTypeWaterObject = (event) => {
@@ -85,7 +134,7 @@ function EditSamplingPlace(){
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const { region, name_place, type_water_object, name_water_object, longitude, latitude, comment } = event.target;
+        const { region, name_place, type_water_object, name_water_object, longitude, latitude } = event.target;
         const errors = [];
 
         if (!region.value) {
@@ -136,7 +185,6 @@ function EditSamplingPlace(){
             errors.coordinates_match =  "These coordinates are already taken";
           }
 
-    
           if (Object.keys(errors).length > 0) {
             setErrorMessages(errors);
             return;
@@ -146,7 +194,6 @@ function EditSamplingPlace(){
             const response = await axios.put(`/api/edit-sampling-places/${id}/update`, sampling_place);
             const updatedPlace = response.data;
             console.log('Data updated:', updatedPlace);
-            this.props.history.push('/searchSamplingPlaces', { successMessage: 'Зміни успішно збережено' });
             navigate('/searchSamplingPlaces');
         } catch (error) {
             console.error('Error updating data:', error);
@@ -158,11 +205,17 @@ function EditSamplingPlace(){
         <div>
           <h1>Change sampling place</h1>
           <div className="edit-sampling-place">
+            <h2>Country</h2>
+            <select name="country" onChange={handleChangeCountry} value={selectCountry}>
+              {uniqCountry.map(place => (
+                <option value={place} key={place}>{place}</option>
+              ))}
+            </select>
             <form onSubmit={handleSubmit}>
                 <h2>Region</h2>
-                <select name="region" onChange={handleChangeRegion} value={selectRegion === '' ? sampling_place.region : selectRegion}>
-                    {places.map(place => (
-                        <option key={place._id} value={place.region}>{place.region}</option>
+                <select name="region" onChange={handleChangeRegion} value={selectRegion}>
+                    {uniqRegion.map(place => (
+                        <option key={place} value={place}>{place}</option>
                     ))}
                 </select>
                 <h2>Name place</h2>
@@ -199,7 +252,7 @@ function EditSamplingPlace(){
                   {errors.coordinates_match && <p className='errors_edit_sp'>{errors.coordinates_match}</p>}
                   {errors.longitude && <p className='errors_edit_sp'>{errors.longitude}</p>}
                 <h2>Latitude</h2>
-                <input type="text" name="latitude" value={sampling_place.latitude} 
+                <input type="text" name="latitude" value={sampling_place.latitude} JSON
                  onChange={(event) => {
                     setSamplingPlace({
                       ...sampling_place,
@@ -213,7 +266,6 @@ function EditSamplingPlace(){
                       ...sampling_place,
                       comment: event.target.value,
                     });}}/>
-                  
                 <input type="submit" value="Edit"/>
             </form>
             </div>

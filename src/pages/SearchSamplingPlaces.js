@@ -26,11 +26,6 @@ class SearchSamplingPlaces extends React.Component{
             uniqRegionPlace: [], 
             uniqRegionSampling: [],
             uniqNWO: [],
-
-
-
-
-
         }  
     }
     componentDidMount(){
@@ -47,6 +42,10 @@ class SearchSamplingPlaces extends React.Component{
           const uniqRegionPlace = [...new Set(filterRegionsByCountry.map(place => place.region))].sort((a,b) => a.localeCompare(b));
           console.log('filterRegions', filterRegionsByCountry)
           this.setState({ places: places, filterRegionsByCountry: filterRegionsByCountry, uniqCountry: uniqCountry, uniqRegionPlace: uniqRegionPlace});
+          if(!this.state.selectedCountry){
+            const selectedCountry = uniqCountry[0]
+            this.setState({ selectedCountry: selectedCountry})
+          }
         } catch (error) {
           console.error('Error fetching places:', error);
         }
@@ -156,12 +155,11 @@ class SearchSamplingPlaces extends React.Component{
               const { filter_search, regime, selectedCountry, selectedRegion, selectedNameWaterObject } = this.state;
               const { uniqCountry, uniqRegionSampling, uniqNWO } = this.state;
               const { filterNWO } = this.state;
-              
               return (
                   <div className="search_sampling_places">
                       <p>Search data sampling_places</p>
                       {regime === false &&
-                      <div class="search-criterian-sp">
+                      <div className="search-criterian-sp">
                           <div >
                               Country
                               <select name="country" value={selectedCountry} onChange={this.handleCountry}>
