@@ -119,6 +119,11 @@ function EditSamplingPlace(){
         const selectRegion = event.target.value;
         setSelectRegion(selectRegion);
 
+        setSamplingPlace({
+          ...sampling_place,
+          region: selectRegion,
+        });
+
         // const filterRegionByRegionSecond = sampling_places.filter(place => place.region === selectRegion);
         // const uniqSPRegionList = [... new Set(filterRegionByRegionSecond.map(place => place.region))].sort((a, b) => a.localeCompare(b));
         // setUniqRegion(uniqSPRegionList);
