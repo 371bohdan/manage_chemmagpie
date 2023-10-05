@@ -202,6 +202,7 @@ class SearchSamplingPlaces extends React.Component{
                                 <div>Name water object</div>
                                 <div>Type water object</div>
                                 <div>Comment</div>
+                                <div>Edit</div>
                             </div>
                               {filterNWO.map((place, index) =>
                                   <div key={place._id} className="tr-result-sp">

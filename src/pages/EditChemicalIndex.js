@@ -269,6 +269,7 @@ function EditChemicalIndex(){
             const response = await axios.put(`/api/edit-chemical-indexes/${id}/update`, chemicalIndex);
             const updateChemicalIndex = response.data;
             console.log('Data updated:', updateChemicalIndex);
+            navigate('/searchChemicalIndexes');
         }catch(err){
             console.log('Something wrong upon change data chemical_indexes:', err)
         }
