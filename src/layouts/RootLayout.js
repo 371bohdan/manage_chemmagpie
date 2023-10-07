@@ -11,7 +11,7 @@ const RootLayout = () => {
                 <NavLink to='/' className='nav-link'>Home</NavLink>
                 <NavLink to='about' className='nav-link'>About</NavLink>
                 <NavLink to='addSamplingPlace' className='nav-link'>Add sampling place</NavLink>
-                <NavLink to='addChemicalIndex' className='nav-link'>Add chemical Index</NavLink>
+                <NavLink to='addChemicalIndex' className='nav-link'>Add chemical index</NavLink>
                 <NavLink to='searchSamplingPlaces' className='nav-link'>Search sampling places</NavLink>
                 <NavLink to='searchChemicalIndexes' className='nav-link'>Search chemical indexes</NavLink>
             </div>

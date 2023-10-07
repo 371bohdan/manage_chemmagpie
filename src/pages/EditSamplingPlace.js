@@ -133,6 +133,10 @@ function EditSamplingPlace(){
     const handleChangeTypeWaterObject = (event) => {
         const selectTypeWaterObject = event.target.value;
         setSelectTypeWaterObject(selectTypeWaterObject);
+        setSamplingPlace({
+          ...sampling_place,
+          type_water_object: selectTypeWaterObject,
+        });
     }
 
 
