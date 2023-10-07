@@ -240,7 +240,7 @@ function EditSamplingPlace(){
                 <select name="type_water_object" onChange={handleChangeTypeWaterObject} value={selectTypeWaterObject === "" ? sampling_place.type_water_object : selectTypeWaterObject}>
                     <option value="lake">lake</option>
                     <option value="ocean">ocean</option>
-                    <option value="reservoir">reservoir</option>
+                    <option value="reservoir">reservior</option>
                     <option value="river">river</option>
                     <option value="sea">sea</option>
                 </select>
