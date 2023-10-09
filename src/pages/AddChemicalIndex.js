@@ -278,35 +278,51 @@ class AddChemicalIndex extends React.Component {
 
     const indicators = [{
       name: 'nitrates',
-      abbr: 'NO3-'
+      abbr: 'NO3-',
+      real: 'NO₃¯',
+      metters: 'mg/dm³',
     },
     {
       name: 'chlorides',
-      abbr:'Cl-'
+      abbr:'Cl-',
+      real: 'Cl¯',
+      metters: 'mg/dm³',
     },
     {
       name: 'nitrites',
-      abbr:'NO2-'
+      abbr:'NO2-',
+      real: 'NO₂¯',
+      metters: 'mg/dm³',
     },
     {
       name: 'phosphates',
-      abbr:'PO43-'
+      abbr:'PO43-',
+      real:'PO₄³¯',
+      metters: 'mg/dm³',
     },
     {
       name: 'sulphates',
-      abbr:'SO42-'
+      abbr:'SO42-',
+      real: 'SO₄²¯',
+      metters: 'mg/dm³',
     },
     {
       name: 'total hardness',
-      abbr:'TH'
+      abbr:'TH',
+      real: 'TH',
+      metters: 'mmol/dm³',
     },
     {
       name: 'chemical oxygen consumption',
-      abbr:'COC'
+      abbr:'COC',
+      real: 'COC',
+      metters: 'mg/dm³',
     },
     {
       name: 'fluorides',
-      abbr:'F-'
+      abbr:'F-',
+      real:'F¯',
+      metters: 'mg/dm³',
     }]
 
 
@@ -354,11 +370,12 @@ class AddChemicalIndex extends React.Component {
               <h1>Chemical index</h1>
               <select id="chemical_index" name="chemical_index" >
                   {indicators.map(indicator =>(
-                    <option key={indicator.name} value={indicator.abbr}>{indicator.abbr}({indicator.name})</option>
+                    <option key={indicator.name} value={indicator.abbr}>{indicator.real}({indicator.name})</option>
                   ))}
               </select>
 
               <h1>Result chemical index</h1>
+              <h1>in mg/dm³(for TW mmol/dm³)</h1>
               <input type='text' name="result_chemical_index"/>
               {result_chemical_index &&  <div className='errors'><p className='errors'>{result_chemical_index}</p></div>}
 

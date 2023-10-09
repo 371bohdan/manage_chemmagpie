@@ -35,37 +35,53 @@ function EditChemicalIndex(){
     const [errors, setErrors] = useState([]);
 
     const indicators = [{
-        name: 'nitrates',
-        abbr: 'NO3-'
-      },
-      {
-        name: 'chlorides',
-        abbr:'Cl-'
-      },
-      {
-        name: 'nitrites',
-        abbr:'NO2-'
-      },
-      {
-        name: 'phosphates',
-        abbr:'PO43-'
-      },
-      {
-        name: 'sulphates',
-        abbr:'SO42-'
-      },
-      {
-        name: 'total hardness',
-        abbr:'TH'
-      },
-      {
-        name: 'chemical oxygen consumption',
-        abbr:'COC'
-      },
-      {
-        name: 'fluorides',
-        abbr:'F-'
-      }]
+      name: 'nitrates',
+      abbr: 'NO3-',
+      real: 'NO₃¯',
+      metters: 'mg/dm³',
+    },
+    {
+      name: 'chlorides',
+      abbr:'Cl-',
+      real: 'Cl¯',
+      metters: 'mg/dm³',
+    },
+    {
+      name: 'nitrites',
+      abbr:'NO2-',
+      real: 'NO₂¯',
+      metters: 'mg/dm³',
+    },
+    {
+      name: 'phosphates',
+      abbr:'PO43-',
+      real:'PO₄³¯',
+      metters: 'mg/dm³',
+    },
+    {
+      name: 'sulphates',
+      abbr:'SO42-',
+      real: 'SO₄²¯',
+      metters: 'mg/dm³',
+    },
+    {
+      name: 'total hardness',
+      abbr:'TH',
+      real: 'TH',
+      metters: 'mmol/dm³',
+    },
+    {
+      name: 'chemical oxygen consumption',
+      abbr:'COC',
+      real: 'COC',
+      metters: 'mg/dm³',
+    },
+    {
+      name: 'fluorides',
+      abbr:'F-',
+      real:'F¯',
+      metters: 'mg/dm³',
+    }]
 
     useEffect(() => {
         fetchDownload();
@@ -300,10 +316,11 @@ function EditChemicalIndex(){
                 <h2>Chemical index</h2>
                 <select id="chemical_index" name="chemical_index" value={chemicalIndex.chemical_index} onChange={changeChemicalIndex}>
                     {indicators.map(indicator =>(
-                        <option key={indicator.abbr} value={indicator.abbr}>{indicator.abbr}({indicator.name})</option>
+                        <option key={indicator.abbr} value={indicator.abbr}>{indicator.real}({indicator.name})</option>
                     ))}
                 </select>
                 <h2>Result chemical index</h2>
+                <h2>in mg/dm³(for TW mmol/dm³)</h2>
                 <input name="result_chemical_index" value={chemicalIndex.result_chemical_index} onChange={(event) => (
                   setChemicalIndex({...chemicalIndex, 
                     result_chemical_index: event.target.value})
